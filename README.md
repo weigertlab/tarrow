@@ -11,7 +11,7 @@ TAP is a self-supervised pre-training method based on time arrow prediction that
 
 The resulting dense representations capture inherently time-asymmetric biological processes such as cell divisions on a pixel-level, as indicated by the model's attribution maps (Grad-CAMs) show in the video below.
 
-https://github.com/weigertlab/tarrow/assets/8866751/7978d672-b024-4673-b092-0c35ce74df5d
+https://github.com/weigertlab/tarrow/assets/8866751/e5c5a26e-b9c1-4b80-862c-289029866ba4
 
 Importantly, the representations from TAP pre-training are beneficial for training machine learning models that solve downstream image analysis tasks, such as detection and segmentation of dividing cells or cell state classification, particularly when only limited ground truth annotations are available as is commonly the case in practice.
 
