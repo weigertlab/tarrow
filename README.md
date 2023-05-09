@@ -3,9 +3,11 @@
 This repository contains the code for the TAP method described in
 > Benjamin Gallusser, Max Stieber and Martin Weigert<br>[*Self-supervised dense representation learning for live-cell microscopy with time arrow prediction*](https://arxiv.org)<br>arXiv, 2023
 
+TAP is a self-supervised pre-training method based on time arrow prediction that learns dense image representations from raw, unlabeled live-cell microscopy videos. The pre-training task consists of predicting the correct order of time-flipped image regions via a *single-image feature extractor* and a subsequent *time arrow prediction head* (as shown in the figure above).
+
+
 ![Overview](overview.svg)
 
-TAP is a self-supervised pre-training method based on time arrow prediction that learns dense image representations from raw, unlabeled live-cell microscopy videos. The pre-training task consists of predicting the correct order of time-flipped image regions via a *single-image feature extractor* and a subsequent *time arrow prediction head* (as shown in the figure above).
 
 The resulting dense representations capture inherently time-asymmetric biological processes such as cell divisions on a pixel-level, as indicated by the model's attribution maps (Grad-CAMs) show in the video below.
 
@@ -15,6 +17,9 @@ Importantly, the representations from TAP pre-training are beneficial for traini
 
 
 ## Installation
+
+We provide TAP training and inference methods as the python package `tarrow`, which can be installed as follows:
+
 - Install [`mamba`](https://mamba.readthedocs.io/en/latest/installation.html) (or `conda`, the same but slower) and create a fresh environment: `mamba create --name tarrow`.
 - Activate the environment: `mamba activate tarrow`.
 - Pip install the `tarrow` python package directly from this GitHub repository:
