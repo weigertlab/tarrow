@@ -1,6 +1,6 @@
-# TAP - Time Arrow Prediction for live-cell microscopy
+# Time arrow prediction (TAP) for live-cell microscopy
 
-This repository contains the code for the method published in
+This repository contains the code for the TAP method described in
 > Benjamin Gallusser, Max Stieber and Martin Weigert<br>[*Self-supervised dense representation learning for live-cell microscopy with time arrow prediction*](https://arxiv.org)<br>arXiv, 2023
 
 ![Overview](overview.svg)
@@ -9,15 +9,15 @@ TAP is a self-supervised pre-training method based on time arrow prediction that
 
 The resulting dense representations capture inherently time-asymmetric biological processes such as cell divisions on a pixel-level, as indicated by the model's attribution maps (Grad-CAMs) show in the video below.
 
-https://user-images.githubusercontent.com/8866751/236218245-4856c998-8981-427c-b8db-8b5b1e3f73e4.mp4
+https://github.com/weigertlab/tarrow/assets/8866751/7978d672-b024-4673-b092-0c35ce74df5d
 
 Importantly, the representations from TAP pre-training are beneficial for training machine learning models that solve downstream image analysis tasks, such as detection and segmentation of dividing cells or cell state classification, particularly when only limited ground truth annotations are available as is commonly the case in practice.
 
 
 ## Installation
-- Install [`mamba`](https://mamba.readthedocs.io/en/latest/installation.html) (or `conda`, the same but slower) and create a fresh environment: `mamba create --name tap`.
-- Activate the environment: `mamba activate tap`.
-- Pip install this package:
+- Install [`mamba`](https://mamba.readthedocs.io/en/latest/installation.html) (or `conda`, the same but slower) and create a fresh environment: `mamba create --name tarrow`.
+- Activate the environment: `mamba activate tarrow`.
+- Pip install the `tarrow` python package directly from this GitHub repository:
 ```
 pip install git+https://github.com/weigertlab/tarrow.git
 ```
