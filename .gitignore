@@ -1,0 +1,15 @@
+/data
+/scripts/runs
+
+__pycache__/
+*.py[cod]
+.idea
+
+.DS_Store
+.ipynb_checkpoints
+.pytest_cache
+*.egg-info/
+build/
+dist/
+htmlcov/
+.coverage*

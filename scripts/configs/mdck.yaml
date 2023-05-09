@@ -1,0 +1,24 @@
+name: mdck
+epochs: 200
+augment: 5
+batchsize: 152
+size: 96
+cam_size: 960
+backbone: unet
+features: 32
+train_samples_per_epoch: 100000
+num_workers: 8
+projhead: minimal_batchnorm
+classhead: minimal
+frames: 2
+delta:
+- 4
+- 8
+input_train:
+- ../data/mdck.tif
+split_train:
+- - 0.0
+  - 0.9
+split_val:
+- 0.9
+- 1.0
