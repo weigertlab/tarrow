@@ -1,7 +1,8 @@
 # Time arrow prediction (TAP) for live-cell microscopy
 
 This repository contains the code for the TAP method described in
-> Benjamin Gallusser, Max Stieber and Martin Weigert<br>[*Self-supervised dense representation learning for live-cell microscopy with time arrow prediction*](https://arxiv.org)<br>arXiv, 2023
+> Benjamin Gallusser, Max Stieber, and Martin Weigert<br>[*Self-supervised dense representation learning for live-cell microscopy with time arrow prediction*](
+https://doi.org/10.48550/arXiv.2305.05511)<br>arXiv, 2023
 
 TAP is a self-supervised pre-training method based on time arrow prediction that learns dense image representations from raw, unlabeled live-cell microscopy videos. The pre-training task consists of predicting the correct order of time-flipped image regions via a *single-image feature extractor* and a subsequent *time arrow prediction head* (as shown in the figure above).
 
@@ -32,7 +33,8 @@ Run
 ```
 python scripts/download_data.py
 ```
-to obtain the public datasets HELA and MDCK, as listed in the [publication](https://arxiv.org).
+to obtain the public datasets HELA and MDCK, as listed in the [publication](
+https://doi.org/10.48550/arXiv.2305.05511).
 
 
 ## Usage
