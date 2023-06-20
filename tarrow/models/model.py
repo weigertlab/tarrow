@@ -9,7 +9,6 @@ import dill
 import numpy as np
 from scipy.ndimage import zoom
 from tqdm.auto import tqdm
-import git
 
 import torch
 from torch import nn
@@ -50,6 +49,15 @@ def _tensor_random_choice(
     idx = np.random.randint(0, len(x), n_samples)
     return x[idx]
 
+
+def _git_commit():
+    """ returns the git commit hash of the current repository if it exists, otherwise None (for debugging purposes)"""
+    import git
+    try:
+        return str(git.Repo(Path(__file__).resolve().parents[2]).commit())
+    except git.exc.InvalidGitRepositoryError:
+        return None
+    
 
 class TimeArrowNet(nn.Module):
     def __init__(
@@ -130,8 +138,7 @@ class TimeArrowNet(nn.Module):
         self.proj_gradients = None
         self.projection_head.register_forward_hook(self.get_activation)
 
-        repo = git.Repo(Path(__file__).resolve().parents[2])
-        model_kwargs["commit"] = str(repo.commit())
+        model_kwargs["commit"] = _git_commit()
 
         self.outdir = outdir
         if self.outdir is not None:
@@ -382,8 +389,8 @@ class TimeArrowNet(nn.Module):
         kwargs = yaml.safe_load(open(model_folder / "model_kwargs.yaml", "rt"))
 
         if not ignore_commit:
-            repo = git.Repo(Path(__file__).resolve().parents[2])
-            if "commit" in kwargs and kwargs["commit"] != str(repo.commit()):
+            _commit = _git_commit()
+            if "commit" in kwargs and kwargs["commit"] != _commit:
                 raise RuntimeError(
                     f"Git commit of saved model ({kwargs['commit']}) does not match current commit of tarrow repo ({repo.commit()}). Set `ignore_commit` parameter to `True` to proceed."
                 )

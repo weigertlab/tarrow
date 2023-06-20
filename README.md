@@ -28,32 +28,38 @@ We provide TAP training and inference methods as the python package `tarrow`, wh
 pip install git+https://github.com/weigertlab/tarrow.git
 ```
 
-## Data
-Run
-```
-python scripts/download_data.py
-```
-to obtain the public datasets HELA and MDCK, as listed in the [publication](
-https://doi.org/10.48550/arXiv.2305.05511).
-
 
 ## Usage
-### Training a TAP model (no ground truth needed!)
 
-> Note: The default configurations assume that your machine has a Nvidia GPU with at least 24GB of memory.
 
-The main script for self-supervised training is called `scripts/train.py`
 
-The only thing you need is a live-cell microscopy video (2D+time).
+### Example Data
 
-The training can be invoked with
+TAP pretraining only needs a set of raw live-cell microscopy video (2D+time) as input, which can be given either as folders containing consecutive frames or as single 2D+t (`TYX`) tif files.
+
+To try it out on some example data we provide the script `scripts/download_data.py`
+
+```
+python download_data.py
+```
+
+that downloads the public datasets HELA and MDCK (as listed in the [publication](
+https://doi.org/10.48550/arXiv.2305.05511)) into a local folder `data`.
+
+
+### Training a TAP model (no ground truth needed)
+
+> Note: The default configurations assume that your machine has a Nvidia GPU with at least 24GB of memory (adjust the `batchsize` parameter in the corresponding `config.yaml` otherwise).
+
+The main script for self-supervised training is called `scripts/train.py` and can be invoked via
+
 ```
 python train.py -c config.yaml
 ```
 
-where `config.yaml` defines the input arguments ([example config](scripts/configs/hela.yaml)).
+where `config.yaml` defines the training arguments such as the location of the input videos (see [example config](scripts/configs/hela.yaml)).
 
-The input arguments can also be passed in via command line, and overwrite the values from the `config.yaml` file, e.g.
+The training arguments can also be passed in via command line in which case they will overwrite the values from `config.yaml` file, e.g.
 
 * `--input_train` either folders containing a temporally ordered sequence of 2D images, or a individual 2D+time tif images.
 * `--delta` timestep(s) between frames
@@ -64,10 +70,12 @@ The input arguments can also be passed in via command line, and overwrite the va
 python train.py --input_train my_video.tif --delta 1 2 --split_train 0.0 0.8 --split_train 0.8 1.0
 ```
 ### Monitor the training
-To monitor the progress of TAP pretraining, run (in the base directory of this repo)
+To monitor the progress of TAP pretraining, run (from the same directory as the training script)
+
 ```
-tensorboard --logdir scripts/runs
+tensorboard --logdir runs
 ```
+
 You can check out:
 - The training and validation loss, as well as time arrow prediction accuracy
 - Example input image patches, both from training and validation set

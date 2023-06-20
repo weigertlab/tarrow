@@ -44,7 +44,7 @@ def download(url: str, fname: str):
 
 
 if __name__ == "__main__":
-    out_path = Path("../data").resolve()
+    out_path = Path("data")
 
     # Hela
     download_and_unzip(

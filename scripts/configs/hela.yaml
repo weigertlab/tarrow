@@ -11,10 +11,10 @@ num_workers: 4
 projhead: minimal_batchnorm
 classhead: minimal
 input_train:
-- ../data/hela/train/01
-- ../data/hela/train/02
-- ../data/hela/test/01
-- ../data/hela/test/02
+- data/hela/train/01
+- data/hela/train/02
+- data/hela/test/01
+- data/hela/test/02
 split_train:
 - - 0.1
   - 1.0
