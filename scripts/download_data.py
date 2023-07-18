@@ -53,7 +53,7 @@ if __name__ == "__main__":
     )
 
     download_and_unzip(
-        "http://data.celltrackingchallenge.net/challenge-datasets/Fluo-N2DL-HeLa.zip",
+        "http://data.celltrackingchallenge.net/test-datasets/Fluo-N2DL-HeLa.zip",
         out_path / "hela" / "test",
     )
 
