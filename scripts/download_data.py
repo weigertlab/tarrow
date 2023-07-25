@@ -20,7 +20,7 @@ def download_and_unzip(url: str, new_folder: Path):
         zip_ref.extractall("temp_folder")
 
     # Rename the top-level folder
-    new_folder.mkdir(parents=True, exist_ok=True)
+    new_folder.parent.mkdir(parents=True, exist_ok=True)
     os.rename("temp_folder/" + os.listdir("temp_folder")[0], new_folder)
 
     # Delete the zip file and temporary folder
