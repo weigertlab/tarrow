@@ -28,11 +28,11 @@ def download_and_unzip(url: str, new_folder: Path):
     os.rmdir("temp_folder")
 
 
-def download(url: str, fname: str):
+def download(url: str, fname: Path):
     resp = requests.get(url, stream=True)
     total = int(resp.headers.get("content-length", 0))
-    with open(fname, "wb") as file, tqdm(
-        desc=fname,
+    with open(str(fname), "wb") as file, tqdm(
+        desc=str(fname),
         total=total,
         unit="iB",
         unit_scale=True,
@@ -60,9 +60,6 @@ if __name__ == "__main__":
     # Mdck
     mdck_path = out_path / "mdck.tif"
     if not mdck_path.exists():
-        os.system(
-            f"wget https://rdr.ucl.ac.uk/ndownloader/files/31127035 -O {mdck_path}"
-        )
-        os.system(f"chmod 775 {mdck_path}")
+        download("https://rdr.ucl.ac.uk/ndownloader/files/31127035", mdck_path)
     else:
         print(f"{mdck_path} already downloaded, skipping.")
