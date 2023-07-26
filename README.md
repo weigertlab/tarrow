@@ -64,10 +64,10 @@ The training arguments can also be passed in via command line in which case they
 * `--input_train` either folders containing a temporally ordered sequence of 2D images, or a individual 2D+time tif images.
 * `--delta` timestep(s) between frames
 * `--split_train` interval of video (relative) to use for training, e.g. `--split_train 0.0 0.8`
-* `--split_val` interval of video (relative) to use for validation, e.g. `--split_train 0.8 1.0`.
+* `--split_val` interval of video (relative) to use for validation, e.g. `--split_val 0.8 1.0`.
 
 ```
-python train.py --input_train my_video.tif --delta 1 2 --split_train 0.0 0.8 --split_train 0.8 1.0
+python train.py --input_train my_video.tif --delta 1 2 --split_train 0.0 0.8 --split_val 0.8 1.0
 ```
 ### Monitor the training
 To monitor the progress of TAP pretraining, run (from the same directory as the training script)
