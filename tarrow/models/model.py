@@ -432,9 +432,9 @@ class TimeArrowNet(nn.Module):
         def write_to_tb(imgs, name):
             # only first channel
             imgs = imgs[:, :, 0, ...]
-            imgs = (imgs - imgs.min(dim=0, keepdim=True)[0]) / (
-                imgs.max(dim=0, keepdim=True)[0] - imgs.min(dim=0, keepdim=True)[0]
-            )
+            # imgs = (imgs - imgs.min(dim=(1,2,3), keepdim=True)[0]) / (
+            #     imgs.max(dim=(1,2,3), keepdim=True)[0] - imgs.min(dim=(1,2,3), keepdim=True)[0]
+            # )
             # logger.debug(
             # f"{name} min = {imgs.min():.2f} max = {imgs.max():.2f} mean {imgs.mean():.2f}"
             # )
@@ -443,7 +443,7 @@ class TimeArrowNet(nn.Module):
                     name,
                     make_grid(
                         imgs[:64, i : i + 1, ...],
-                        scale_each=False,
+                        scale_each=True,
                         value_range=(0, 1),
                         padding=0,
                     ),
