@@ -129,7 +129,11 @@ def cam_insets(
 
     # dont get inds from border
     inds = get_peaks(
-        _fill_border(cam, w_inset // 2, 0), scale=0.3, min_dist=w_inset / 2, th=th
+        # +2 to fix off by one errors induced by scaling. This ensures that slices are contained in full image.
+        _fill_border(cam, (w_inset + 2) // 2, 0),
+        scale=0.3,
+        min_dist=w_inset / 2,
+        th=th,
     )[:n_insets]
 
     ss = tuple(
