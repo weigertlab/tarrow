@@ -100,3 +100,17 @@ x = torch.rand(1, 2, 1, 96, 96)
 rep = model.embedding(x)
 print(f"Dense representations for image `x` with shape {tuple(rep.shape)}")
 ```
+
+
+### How tot cite
+
+```
+@inproceedings{gallusser2023,
+  title={Self-supervised dense representation learning for live-cell microscopy with time arrow prediction},
+  author={Gallusser, Benjamin and Stieber, Max and Weigert, Martin},
+  pages = {537--547},
+	booktitle = {Medical Image Computing and Computer Assisted Intervention – {MICCAI} 2023},
+	publisher = {Springer Nature Switzerland},
+	date = {2023}
+}
+```
