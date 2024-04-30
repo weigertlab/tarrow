@@ -268,7 +268,7 @@ class TarrowDataset(Dataset):
             fnames = fnames[:n_images]
             imgs = self._load_image_folder(fnames, split_start, split_end)
 
-        elif inp.suffix == ".tif":
+        elif inp.suffix == ".tif" or inp.suffix == ".tiff":
             logger.info(f"Loading {inp}")
             imgs = tifffile.imread(str(inp))
             logger.info("Done")
