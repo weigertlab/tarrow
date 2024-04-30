@@ -10,7 +10,7 @@ from matplotlib import cm
 import torch
 
 # from ..utils import normalize
-from tarrow.utils import normalize
+from tarrow.utils import normalize, str2bool
 
 
 def create_visuals(
@@ -23,7 +23,7 @@ def create_visuals(
     norm_cam=True,
     outdir: str = None,
     fps: int = 5,
-    file_format: str = "jpg",
+    file_format: str = "tiff",
 ):
     res = defaultdict(list)
 
@@ -80,15 +80,15 @@ def create_visuals(
     # Write to file
     if outdir is not None:
         res_rgb = dict()
-        res_rgb["raws"] = cm.gray(res.raws)[..., :3]
-        res_rgb["cam"] = cm.magma(res.cam)[..., :3]
+        res_rgb["raws"] = res.raws
+        res_rgb["cam"] = res.cam
 
-        res_rgb["overlays"] = (1 - alpha_cam) * res_rgb["raws"] + alpha_cam * res_rgb[
-            "cam"
-        ]
+        # res_rgb["overlays"] = (1 - alpha_cam) * res_rgb["raws"] + alpha_cam * res_rgb[
+        #     "cam"
+        # ]
 
-        for k, v in res_rgb.items():
-            res_rgb[k] = _to_uint8(v)
+        # for k, v in res_rgb.items():
+        # res_rgb[k] = _to_uint8(v)
 
         res_rgb = SimpleNamespace(**res_rgb)
 
@@ -102,6 +102,7 @@ def create_visuals(
                 imageio.imsave(
                     subdir / f"{name}_{i:05d}.{file_format}",
                     x,
+                    compression="zlib",
                 )
 
     return res
@@ -139,12 +140,22 @@ def get_argparser():
     parser.add_argument("--frames", type=int, default=2)
     parser.add_argument("--delta", type=int, default=1)
     parser.add_argument("--fps", type=int, default=5)
-    parser.add_argument("--device", type=str, default="cpu")
-    parser.add_argument("--max_height", type=int, default=2048)
+    parser.add_argument("--device", type=str, default="cuda")
+    parser.add_argument(
+        "--max_height", type=int, default=2048, help="Limits size of output images"
+    )
     parser.add_argument("--alpha", type=float, default=0.6)
     parser.add_argument("--subsample", type=int, default=1)
     parser.add_argument("--divby", type=int, default=1)
-    parser.add_argument("--file_format", default="jpg", choices=["jpg", "png"])
+    parser.add_argument("--file_format", default="tiff", choices=["jpg", "png", "tiff"])
+    parser.add_argument(
+        "--size",
+        default=None,
+        type=int,
+        nargs="+",
+        help="Limit size of input image to the model",
+    )
+    parser.add_argument("--norm_cam", type=str2bool, default=False)
     return parser
 
 
@@ -179,8 +190,9 @@ def write_visuals(args=None):
         delta_frames=[args.delta],
         subsample=args.subsample,
         channels=args.channels,
-        size=None,
+        size=args.size,
         permute=False,
+        random_crop=False,
         device=args.device,
     )
 
@@ -192,7 +204,7 @@ def write_visuals(args=None):
         return_feats=False,
         alpha_cam=args.alpha,
         outdir=args.outdir,
-        # norm_single_images=args.norm,
+        norm_cam=args.norm_cam,
         fps=args.fps,
         file_format=args.file_format,
     )

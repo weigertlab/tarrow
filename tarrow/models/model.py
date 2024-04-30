@@ -51,13 +51,14 @@ def _tensor_random_choice(
 
 
 def _git_commit():
-    """ returns the git commit hash of the current repository if it exists, otherwise None (for debugging purposes)"""
+    """returns the git commit hash of the current repository if it exists, otherwise None (for debugging purposes)"""
     import git
+
     try:
         return str(git.Repo(Path(__file__).resolve().parents[2]).commit())
     except git.exc.InvalidGitRepositoryError:
         return None
-    
+
 
 class TimeArrowNet(nn.Module):
     def __init__(

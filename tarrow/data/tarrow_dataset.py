@@ -13,6 +13,7 @@ import skimage
 from ..utils import normalize as utils_normalize
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 class TarrowDataset(Dataset):
@@ -210,7 +211,7 @@ class TarrowDataset(Dataset):
                     mask = smoother(out)
                     if mask.std() > threshold:
                         return out
-                    logger.debug(f"Reject {i}")
+                    # logger.debug(f"Reject {i}")
                 return out
 
         return crop

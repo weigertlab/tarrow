@@ -15,6 +15,7 @@ from torch.utils.data import ConcatDataset, Subset, Dataset
 import tarrow
 from tarrow.models import TimeArrowNet
 from tarrow.data import TarrowDataset, get_augmenter
+from tarrow.visualizations import create_visuals
 
 
 logging.basicConfig(
@@ -127,6 +128,12 @@ def get_argparser():
         type=int,
         default=3,
         help="Number of time frames with periodic CAM visualization.",
+    )
+    p.add(
+        "--write_final_cams",
+        type=tarrow.utils.str2bool,
+        default=False,
+        help="Write out CAMs of validation datasets after training is finished.",
     )
     p.add(
         "--augment",
@@ -249,17 +256,19 @@ def _subset(data: Dataset, split=(0, 1.0)):
 def _create_loader(dataset, args, num_samples, num_workers, idx=None, sequential=False):
     return torch.utils.data.DataLoader(
         dataset,
-        sampler=torch.utils.data.SequentialSampler(
-            torch.utils.data.Subset(
-                dataset,
-                torch.multinomial(
-                    torch.ones(len(dataset)), num_samples, replacement=True
-                ),
+        sampler=(
+            torch.utils.data.SequentialSampler(
+                torch.utils.data.Subset(
+                    dataset,
+                    torch.multinomial(
+                        torch.ones(len(dataset)), num_samples, replacement=True
+                    ),
+                )
             )
-        )
-        if sequential
-        else torch.utils.data.RandomSampler(
-            dataset, replacement=True, num_samples=num_samples
+            if sequential
+            else torch.utils.data.RandomSampler(
+                dataset, replacement=True, num_samples=num_samples
+            )
         ),
         batch_size=args.batchsize,
         num_workers=num_workers,
@@ -306,6 +315,17 @@ def _convert_to_split_pairs(lst):
         return
 
 
+def _write_cams(data_visuals, model, device):
+    for i, data in enumerate(data_visuals):
+        vis = create_visuals(
+            dataset=data,
+            model=model,
+            device=device,
+            max_height=720,
+            outdir=model.outdir / "visuals" / f"dataset_{i}",
+        )
+
+
 def main(args):
     if platform.system() == "Darwin":
         args.num_workers = 0
@@ -347,12 +367,13 @@ def main(args):
             split=(0, 1.0),
             size=None if args.cam_size is None else (args.cam_size,) * args.ndim,
             args=args,
-            n_frames=2,
+            n_frames=args.frames,
             delta_frames=args.delta[-1:],
             permute=False,
             random_crop=False,
         )
         for inp in set([*inputs["train"], *inputs["val"]])
+        # for inp in inputs["val"][-1:]
     )
 
     logger.info("Build training datasets.")
@@ -445,6 +466,9 @@ def main(args):
         save_checkpoint_every=args.save_checkpoint_every,
         lambda_decorrelation=args.decor_loss,
     )
+
+    if args.write_final_cams:
+        _write_cams(data_visuals, model, device)
 
 
 if __name__ == "__main__":
