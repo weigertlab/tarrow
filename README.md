@@ -102,7 +102,7 @@ print(f"Dense representations for image `x` with shape {tuple(rep.shape)}")
 ```
 
 
-### How tot cite
+### How to cite
 
 ```
 @inproceedings{gallusser2023,
