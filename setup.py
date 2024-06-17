@@ -40,5 +40,6 @@ setup(
         "gitpython",
         "cython",
         "numba",
+        "requests",
     ],
 )

@@ -45,14 +45,20 @@ def get_argparser():
         type=str,
         nargs="+",
         required=True,
-        help="Input training data. Can be 2D+time images, or directories with time sequences of 2d images.",
+        help=(
+            "Input training data. Can be 2D+time images, or directories with time"
+            " sequences of 2d images."
+        ),
     )
     p.add(
         "--input_val",
         type=str,
         nargs="*",
         default=None,
-        help="Same as `--input_train`. If not given, `--input_train` is used for validation.",
+        help=(
+            "Same as `--input_train`. If not given, `--input_train` is used for"
+            " validation."
+        ),
     )
     p.add("--read_recursion_level", type=int, default=0)
     p.add(
@@ -115,13 +121,18 @@ def get_argparser():
         "--channels",
         type=int,
         default=0,
-        help="Number of channels in the input images. Set to 0 for images do not have a explicit channel dimension.",
+        help=(
+            "Number of channels in the input images. Set to 0 for images do not have a"
+            " explicit channel dimension."
+        ),
     )
     p.add(
         "--reject_background",
         type=tarrow.utils.str2bool,
         default=False,
-        help="Set to `True` to heuristically reject background patches during training.",
+        help=(
+            "Set to `True` to heuristically reject background patches during training."
+        ),
     )
     p.add(
         "--cam_subsampling",
@@ -139,7 +150,10 @@ def get_argparser():
         "--augment",
         type=int,
         default=5,
-        help="Level of data augmentation from 0 (no augmentation) to 5 (strong augmentation).",
+        help=(
+            "Level of data augmentation from 0 (no augmentation) to 5 (strong"
+            " augmentation)."
+        ),
     )
     p.add(
         "--subsample",
@@ -167,7 +181,10 @@ def get_argparser():
     p.add(
         "--binarize",
         action="store_true",
-        help="Binarize the input images. Should only be used for images stored in integer format.",
+        help=(
+            "Binarize the input images. Should only be used for images stored in"
+            " integer format."
+        ),
     )
     p.add(
         "--decor_loss",
@@ -181,8 +198,11 @@ def get_argparser():
         "--gpu",
         "-g",
         type=str,
-        default="0",
-        help="GPUs to use. Can be a single integer, a comma-separated list of integers, or an interval `a-b`, or 'cpu'.",
+        default=None,
+        help=(
+            "GPUs to use. Can be a single integer, a comma-separated list of integers,"
+            " or an interval `a-b`, or 'cpu'."
+        ),
     )
     p.add("--tensorboard", type=tarrow.utils.str2bool, default=True)
     p.add(
@@ -349,9 +369,12 @@ def main(args):
 
     tarrow.utils.seed(args.seed)
 
-    device, n_gpus = tarrow.utils.set_device(args.gpu)
-    if n_gpus > 1:
-        raise NotImplementedError("Multi-GPU training not implemented yet.")
+    if args.gpu:
+        device, n_gpus = tarrow.utils.set_device(args.gpu)
+        if n_gpus > 1:
+            raise NotImplementedError("Multi-GPU training not implemented yet.")
+    else:
+        device = torch.device("cuda")
 
     augmenter = get_augmenter(args.augment)
 
@@ -372,7 +395,8 @@ def main(args):
             permute=False,
             random_crop=False,
         )
-        for inp in set([*inputs["train"], *inputs["val"]])
+        for inp in set([inputs["train"][0], inputs["val"][0]])
+        # for inp in set([*inputs["train"], *inputs["val"]])
         # for inp in inputs["val"][-1:]
     )
 
