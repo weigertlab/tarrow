@@ -2,6 +2,7 @@ import os
 import zipfile
 from pathlib import Path
 import requests
+import shutil
 from tqdm import tqdm
 
 
@@ -21,7 +22,7 @@ def download_and_unzip(url: str, new_folder: Path):
 
     # Rename the top-level folder
     new_folder.parent.mkdir(parents=True, exist_ok=True)
-    os.rename("temp_folder/" + os.listdir("temp_folder")[0], new_folder)
+    shutil.move("temp_folder/" + os.listdir("temp_folder")[0], new_folder)
 
     # Delete the zip file and temporary folder
     os.remove("downloaded_file.zip")
