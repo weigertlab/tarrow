@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 def normalize(
     x, pmin=1, pmax=99.8, clip=False, eps=1e-10, axis=None, subsample: int = 1
 ):
-    x = np.array(x, dtype=np.float32, copy=False)
+    x = np.asarray(x, dtype=np.float32)
 
     # standardize axis, e.g. (-2,-1) -> (1,2) for 3d data
     if axis is None:

@@ -13,7 +13,7 @@ import skimage
 from ..utils import normalize as utils_normalize
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 
 class TarrowDataset(Dataset):
